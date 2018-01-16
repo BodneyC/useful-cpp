@@ -11,7 +11,7 @@ private:
 
 public:
     Stack(int _width = 50);
-    ~Stack() = default;
+    ~Stack();
 
     bool push(const Type &entry);
     Type pop(void);
@@ -22,6 +22,12 @@ template<class Type>
 Stack<Type>::Stack(int _width): width(_width), point(0)
 {
     arr = new Type[width];
+}
+
+template<class Type>
+Stack<Type>::~Stack(void)
+{
+    delete[] arr;
 }
 
 template<class Type>
