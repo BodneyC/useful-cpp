@@ -1,3 +1,4 @@
+#include <iostream>
 #include "llist.hpp"
 
 int main(int argc, char** argv)
@@ -12,7 +13,15 @@ int main(int argc, char** argv)
     for(int i = 10; i < 20; i++)
         llist.addTail(new Node<int>(i));
 
+
+    llist.addHead(5);
+
+    llist.print();
+
+    std::cout << std::endl;
+
     llist.removeVal(5);
+    llist.addTail(5);
 
     Node<int>* rem = new Node<int>(10);
     llist.addHead(rem);

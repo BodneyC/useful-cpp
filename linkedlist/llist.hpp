@@ -103,25 +103,69 @@ void LList<Type>::addTail(Type value_t)
 template<class Type>
 void LList<Type>::removeVal(Type value_t)
 {
-    Node<Type>* tmp = head;
+    Node<Type>* prev = NULL;
+    Node<Type>* cur = head;
 
-    while(tmp->next) {
-        if(tmp->value_t == value_t)
-            removeNode(tmp);
-        
-        tmp = tmp->next;
+    while(cur) {
+        if(cur->value_t == value_t) {
+            if(cur == head)
+                head = cur->next;
+            else if(cur == tail) {
+                prev->next = cur->next;
+                tail = prev;
+            } else
+                prev->next = cur->next;
+        }
+
+        prev = cur;
+        cur = cur->next;
     }
+
+/* Only applicable if `tail` isn't present
+
+    Node<Type>** tmp_p = &head;
+    Node<Type>* tmp_h = head;
+
+    while(tmp_h) {
+        if(tmp_h->value_t == value_t)
+            *tmp_p = tmp_h->next;
+
+        tmp_p = &tmp_h->next;
+        tmp_h = tmp_h->next;
+    }
+*/
 }
 
 template<class Type>
 void LList<Type>::removeNode(Node<Type>* node)
 {
+    Node<Type>* prev = NULL;
+    Node<Type>* cur = head;
+
+    while(cur) {
+        if(cur->value_t == node->value_t) {
+            if(cur == head)
+                head = cur->next;
+            else if(cur == tail) {
+                prev->next = cur->next;
+                tail = prev;
+            } else
+                prev->next = cur->next;
+        }
+
+        prev = cur;
+        cur = cur->next;
+    }
+
+/* Only applicable if `tail` isn't present
+
     Node<Type>** tmp = &head;
 
     while((*tmp) != node)
         tmp = &(*tmp)->next;
 
     *tmp = node->next;
+*/
 }
 
 template<class Type>
