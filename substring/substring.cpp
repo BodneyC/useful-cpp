@@ -46,6 +46,8 @@ int main (int argc, char** argv)
         std::cout << "And the winner is... " << result << std::endl;
 
         delete[] subs;
-        infile.close();
     }
+
+    infile.close();
+    return 0;
 }
