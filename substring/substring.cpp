@@ -1,53 +1,64 @@
-#include <iostream>
 #include <algorithm>
-#include <fstream>
 
-bool lencomp(std::string &str1, std::string &str2)
+#include <iostream>
+
+#include "substring.hpp"
+
+Substr::Substr(std::string _superstr, int _min_length): 
+    superstr(_superstr), min_length(_min_length)
+{
+    len = superstr.length();
+    perms = ((len * (len + 1)) / 2 );
+
+    for(int i = 0; i < min_length - 1; i++) {
+        perms -= (len - i);
+    }
+
+    substr = new std::string[perms];
+}
+
+Substr::~Substr(void)
+{
+    delete[] substr;
+}
+
+void Substr::ret_substrings(void)
+{
+    int ind = 0;
+
+    for(int i = 0; i < len; i++) {
+        for(int j = 1; j < len - i; j++, ind++) {
+            for(int k = 0; k <= j; k++) {
+                substr[ind] += superstr[k + i];
+            }
+        }
+    }
+}
+
+void Substr::sort_substrings(void)
+{
+    std::sort(substr, substr + perms, lencomp);
+}
+
+void Substr::sort_substrings(std::string* _substr, int _len)
+{
+    std::sort(_substr, _substr + _len, lencomp);
+}
+
+bool Substr::lencomp(std::string &str1, std::string &str2)
 {
     return str1.length() < str2.length();
 }
 
-int main (int argc, char** argv)
+std::string Substr::ret_minimum(void)
 {
-    std::ifstream infile("stringlist.txt", std::ios::in);
-    std::string line = "";
-
-    while(getline(infile, line)) {
-        std::string result = "";
-        int len = line.length();
-        int perms = ((len * (len + 1)) / 2 ) - len;;
-        std::string* subs = new std::string[perms];
-
-        int ind = 0;
-        /** For each starting letter */
-        for(int i = 0; i < len; i++) {
-            /** For each length */
-            for(int j = 1; j < len - i; j++, ind++) {
-                /** For each character */
-                for(int k = 0; k <= j; k++) {
-                    subs[ind] += line[k + i];
-                }
+    for(int i = 0; i < perms - 1; i++) {
+        for(int j = i + 1; j < perms; j++) {
+            if(substr[i] == substr[j]) {
+                return substr[i];
             }
         }
-
-        std::sort(subs, subs + perms, lencomp);
-
-        for(int i = 0; i < perms - 1; i++) {
-            for(int j = i + 1; j < perms; j++) {
-                if(subs[i] == subs[j]) {
-                    result = subs[i];
-                    break;
-                }
-            }
-            if(result != "")
-                break;
-        }
-
-        std::cout << "And the winner is... " << result << std::endl;
-
-        delete[] subs;
     }
 
-    infile.close();
-    return 0;
+    return NULL;
 }
