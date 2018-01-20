@@ -3,32 +3,32 @@
 
 int main(int argc, char** argv)
 {
-    Node<int>* n1 = new Node<int>(0);
+	Node<int>* n1 = new Node<int>(0);
 
-    LList<int> llist(n1);
+	LList<int> llist(n1);
 
-    for(int i = 1; i < 10; i++)
-        llist.addTail(i);
+	for(int i = 1; i < 10; i++)
+		llist.addTail(i);
 
-    for(int i = 10; i < 20; i++)
-        llist.addTail(new Node<int>(i));
+	for(int i = 10; i < 20; i++)
+		llist.addTail(new Node<int>(i));
 
 
-    llist.addHead(5);
+	llist.addHead(5);
 
-    llist.print();
+	llist.print();
 
-    std::cout << std::endl;
+	std::cout << std::endl;
 
-    llist.removeVal(5);
-    llist.addTail(5);
+	llist.removeVal(5);
+	llist.addTail(5);
 
-    Node<int>* rem = new Node<int>(10);
-    llist.addHead(rem);
+	Node<int>* rem = new Node<int>(10);
+	llist.addHead(rem);
 
-    llist.removeNode(rem);
+	llist.removeNode(rem);
 
-    llist.print();
+	llist.print();
 
-    return 0;
+	return 0;
 }
