@@ -8,12 +8,16 @@ int main(int argc, char** argv)
     Node<int>* root = btree.retRoot();
 
     for(int i = 0; i < 10; i++)
-        btree.SBinsert(i);
+        btree.insert(i);
 
-    btree.printTopDown();
+    btree.print_top_down();
 
-    std::cout << "Max depth: " << btree.maxdepth() << std::endl
-        << "Min depth: " << btree.mindepth() << std::endl;
+    btree.remove_node(6);
+
+    btree.print_top_down();
+
+    std::cout << "Max depth: " << btree.max_depth() << std::endl
+        << "Min depth: " << btree.min_depth() << std::endl;
 
     return 0;
 }

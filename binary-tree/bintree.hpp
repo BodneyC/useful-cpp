@@ -5,7 +5,7 @@
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #endif
 
-/** For printTopDown() only, can be removed (with the function) */
+/** For print_top_down() only, can be removed (with the function) */
 #include <iostream> 
 
 template<class Type>
@@ -32,28 +32,30 @@ public:
 	~Bintree(void);
 
 	Node<Type>* retRoot(void);
-	void delTree(void);
+	void del_tree(void);
 	void insert(Node<Type>* node);
 	void insert(Type value);
 	Node<Type>* search(Type value);
-	void printTopDown(void);
-	int maxdepth(void);
-	int mindepth(void);
+	void print_top_down(void);
+	int max_depth(void);
+	int min_depth(void);
 	void SBinsert(Type value);
+	Node<Type>* remove_node(Type value);
 
 private:
 	Node<Type>* root;
 
-	void delTree(Node<Type>* node);
+	void del_tree(Node<Type>* node);
 	void insert(Node<Type>* node, Type value);
 	void insert(Node<Type>* cur_node, Node<Type>* in_node);
 	Node<Type>* search(Node<Type>* node, Type value);
-	void printTopDown(Node<Type>* node);
-	int maxdepth(Node<Type>* node);
-	int mindepth(Node<Type>* node);
+	void print_top_down(Node<Type>* node);
+	int max_depth(Node<Type>* node);
+	int min_depth(Node<Type>* node);
 	Node<Type>* SBinsert(Node<Type>* node, Type value);
 	Node<Type>* rotateL(Node<Type>* nodeR);
 	Node<Type>* rotateR(Node<Type>* nodeL);
+	Node<Type>* remove_node(Node<Type>* node, Type value);
 
 	int height(Node<Type>* node)
 	{
@@ -66,7 +68,7 @@ private:
 template<class Type>
 Bintree<Type>::~Bintree(void)
 {
-	delTree(root);
+	del_tree(root);
 }
 
 template<class Type>
@@ -76,17 +78,17 @@ Node<Type>* Bintree<Type>::retRoot(void)
 }
 
 template<class Type>
-void Bintree<Type>::delTree(void)
+void Bintree<Type>::del_tree(void)
 {
-	delTree(root);
+	del_tree(root);
 }
 
 template<class Type>
-void Bintree<Type>::delTree(Node<Type>* node)
+void Bintree<Type>::del_tree(Node<Type>* node)
 {
 	if(node) {
-		delTree(node->left);
-		delTree(node->right);
+		del_tree(node->left);
+		del_tree(node->right);
 		delete node;
 	}
 }
@@ -241,42 +243,42 @@ Node<Type>* Bintree<Type>::search(Node<Type>* node, Type value)
 /*************** Print tree ****************/
 
 template<class Type>
-void Bintree<Type>::printTopDown(void)
+void Bintree<Type>::print_top_down(void)
 {
-	printTopDown(root);
+	print_top_down(root);
 
 	std::cout << std::endl;
 }
 
 template<class Type>
-void Bintree<Type>::printTopDown(Node<Type>* node)
+void Bintree<Type>::print_top_down(Node<Type>* node)
 {
 	if(!node)
 		return;
 
 	std::cout << node->value << " L";
 
-	printTopDown(node->left);
+	print_top_down(node->left);
 	std::cout << " R";
-	printTopDown(node->right);
+	print_top_down(node->right);
 }
 
 /*************** Maximum depth of tree ****************/
 
 template<class Type>
-int Bintree<Type>::maxdepth(void)
+int Bintree<Type>::max_depth(void)
 {
-	return maxdepth(root);
+	return max_depth(root);
 }
 
 template<class Type>
-int Bintree<Type>::maxdepth(Node<Type>* node)
+int Bintree<Type>::max_depth(Node<Type>* node)
 {
 	if(!node || (!(node->left) && !(node->right)))
 		return 0;
 
-	int ldepth = maxdepth(node->left);
-	int rdepth = maxdepth(node->right);
+	int ldepth = max_depth(node->left);
+	int rdepth = max_depth(node->right);
 
 	return ldepth > rdepth ? ldepth + 1: rdepth + 1;
 }
@@ -284,21 +286,61 @@ int Bintree<Type>::maxdepth(Node<Type>* node)
 /*************** Minimum depth of tree ****************/
 
 template<class Type>
-int Bintree<Type>::mindepth(void)
+int Bintree<Type>::min_depth(void)
 {
-	return mindepth(root);
+	return min_depth(root);
 }
 
 template<class Type>
-int Bintree<Type>::mindepth(Node<Type>* node)
+int Bintree<Type>::min_depth(Node<Type>* node)
 {
 	if(!node || !(node->left) || !(node->right))
 		return 0;
 
-	int ldepth = mindepth(node->left);
-	int rdepth = mindepth(node->right);
+	int ldepth = min_depth(node->left);
+	int rdepth = min_depth(node->right);
 
 	return ldepth < rdepth ? ldepth + 1: rdepth + 1;
+}
+
+/*************** Node removal ****************/
+
+template<class Type>
+Node<Type>* Bintree<Type>::remove_node(Type value)
+{
+	return remove_node(root, value);
+}
+
+template<class Type>
+Node<Type>* Bintree<Type>::remove_node(Node<Type>* node, Type value)
+{
+	if(!node)
+		return node;
+	else if(value < node->value) {
+		node->left = remove_node(node->left, value);
+	} else if(value > node->value) {
+		node->right = remove_node(node->right, value);
+	} else {
+		if(!(node->right) && !(node->left)) {
+			delete node;
+			node = NULL;
+		} else if(!(node->right)) {
+			Node<Type>* tmp = node;
+			node = node->left;
+			delete tmp;
+		} else if (!(node->left)) {
+			Node<Type>* tmp = node;
+			node = node->right;
+			delete tmp;
+		} else {
+			Node<Type>* tmp = node->left;
+			while(tmp->right) 
+				tmp = tmp->right;
+			node->value = tmp->value;
+			node->left = remove_node(node->left, tmp->value);
+		}
+	}
+	return node;
 }
 
 #endif
