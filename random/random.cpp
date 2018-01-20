@@ -1,4 +1,4 @@
-#ifdef __cpluplus
+#ifdef __cplusplus
 
 #include <iostream>
 #include <random>
