@@ -56,6 +56,7 @@ private:
 	Node<Type>* rotateL(Node<Type>* nodeR);
 	Node<Type>* rotateR(Node<Type>* nodeL);
 	Node<Type>* remove_node(Node<Type>* node, Type value);
+	void eval_height(Node<Type>* node);
 
 	int height(Node<Type>* node)
 	{
@@ -306,6 +307,18 @@ int Bintree<Type>::min_depth(Node<Type>* node)
 /*************** Node removal ****************/
 
 template<class Type>
+void Bintree<Type>::eval_height(Node<Type>* node)
+{
+	if(!node)
+		return;
+
+	node->height = max_depth(node) - 1;
+
+	eval_height(node->left);
+	eval_height(node->right);
+}
+
+template<class Type>
 Node<Type>* Bintree<Type>::remove_node(Type value)
 {
 	return remove_node(root, value);
@@ -339,6 +352,7 @@ Node<Type>* Bintree<Type>::remove_node(Node<Type>* node, Type value)
 			node->value = tmp->value;
 			node->left = remove_node(node->left, tmp->value);
 		}
+		eval_height(root);
 	}
 	return node;
 }

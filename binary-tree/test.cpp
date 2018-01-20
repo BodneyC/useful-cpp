@@ -8,7 +8,7 @@ int main(int argc, char** argv)
     Node<int>* root = btree.retRoot();
 
     for(int i = 0; i < 10; i++)
-        btree.insert(i);
+        btree.SBinsert(i);
 
     btree.print_top_down();
 
