@@ -121,7 +121,7 @@ void LList<Type>::removeVal(Type value_t)
 		cur = cur->next;
 	}
 
-/* Only applicable if `tail` isn't present
+	/* Only applicable if `tail` isn't present
 
 	Node<Type>** tmp_p = &head;
 	Node<Type>* tmp_h = head;
@@ -133,7 +133,7 @@ void LList<Type>::removeVal(Type value_t)
 		tmp_p = &tmp_h->next;
 		tmp_h = tmp_h->next;
 	}
-*/
+	*/
 }
 
 template<class Type>
@@ -143,7 +143,7 @@ void LList<Type>::removeNode(Node<Type>* node)
 	Node<Type>* cur = head;
 
 	while(cur) {
-		if(cur->value_t == node->value_t) {
+		if(cur == node) {
 			if(cur == head)
 				head = cur->next;
 			else if(cur == tail) {
@@ -157,7 +157,7 @@ void LList<Type>::removeNode(Node<Type>* node)
 		cur = cur->next;
 	}
 
-/* Only applicable if `tail` isn't present
+	/* Only applicable if `tail` isn't present
 
 	Node<Type>** tmp = &head;
 
@@ -165,7 +165,7 @@ void LList<Type>::removeNode(Node<Type>* node)
 		tmp = &(*tmp)->next;
 
 	*tmp = node->next;
-*/
+	*/
 }
 
 template<class Type>
